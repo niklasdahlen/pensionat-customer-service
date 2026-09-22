@@ -35,7 +35,7 @@ public class CustomerServiceTest {
         customerService = new CustomerService(customerRepository, passwordEncoder, bookingClient);
     }
     @Test
-    void createCustomer_savesCustomerAndHashesPassword() {
+    void savesCustomerAndHashesPassword() {
         CreateCustomerRequest request = new CreateCustomerRequest(
                 "Anna", "Andersson", "anna@test.com", "plaintext-password", "0701234567"
         );
@@ -52,7 +52,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    void deleteCustomer_throwsNotFound_whenCustomerDoesNotExist() {
+    void throwsNotFound_whenCustomerDoesNotExist() {
         when(customerRepository.existsById(999L)).thenReturn(false);
 
         assertThrows(NotFoundException.class,
@@ -62,7 +62,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    void deleteCustomer_throwsConflict_whenCustomerHasActiveBookings() {
+    void throwsConflict_whenCustomerHasActiveBookings() {
         when(customerRepository.existsById(5L)).thenReturn(true);
         when(bookingClient.customerHasActiveBookings(5L)).thenReturn(true);
 
@@ -73,7 +73,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    void deleteCustomer_succeeds_whenNoActiveBookings() {
+    void deleteCustomer_whenNoActiveBookings() {
         when(customerRepository.existsById(5L)).thenReturn(true);
         when(bookingClient.customerHasActiveBookings(5L)).thenReturn(false);
 
